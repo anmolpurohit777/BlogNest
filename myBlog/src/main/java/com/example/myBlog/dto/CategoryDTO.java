@@ -1,5 +1,6 @@
 package com.example.myBlog.dto;
 
+//CategoryDTO
 public class CategoryDTO
 {
     private int categoryId;

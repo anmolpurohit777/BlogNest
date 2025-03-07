@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+
+//UserEntity
 @Entity
 @Table(name="users")
 public class User

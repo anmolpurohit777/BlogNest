@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+//UserService
+
 @Service
 public class UserService
 {
@@ -78,5 +80,5 @@ public class UserService
         UserDTO userDTO=modelMapper.map(user, UserDTO.class);
         return userDTO;
     }
-
 }
+

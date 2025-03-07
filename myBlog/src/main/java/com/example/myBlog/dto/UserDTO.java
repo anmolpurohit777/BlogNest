@@ -1,5 +1,6 @@
 package com.example.myBlog.dto;
 
+//UserDTO
 public class UserDTO
 {
     private int id;

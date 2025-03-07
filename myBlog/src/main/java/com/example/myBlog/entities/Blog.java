@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.Date;
 
+//BlogEntity
 @Entity
 @Table(name="blogs")
 public class Blog

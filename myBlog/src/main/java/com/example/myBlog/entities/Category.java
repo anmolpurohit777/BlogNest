@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.List;
 
+//CategoryEntity
 @Entity
 @Table(name="categories")
 public class Category

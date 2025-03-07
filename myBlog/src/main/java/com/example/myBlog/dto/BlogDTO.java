@@ -5,6 +5,7 @@ import com.example.myBlog.entities.User;
 
 import java.util.Date;
 
+//BlogDTO
 public class BlogDTO
 {
     private String title;

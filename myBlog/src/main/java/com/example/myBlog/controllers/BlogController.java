@@ -1,6 +1,5 @@
 package com.example.myBlog.controllers;
 
-import com.example.myBlog.entities.Blog;
 import com.example.myBlog.dto.BlogDTO;
 import com.example.myBlog.services.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
