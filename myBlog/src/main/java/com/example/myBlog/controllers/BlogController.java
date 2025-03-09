@@ -86,4 +86,14 @@ public class BlogController
             return ResponseEntity.internalServerError().body("Error deleting blog: " + e.getMessage());
         }
     }
+
+    @GetMapping("/blogs/search/{keyword}")
+    public ResponseEntity<?> searchBlogByTitle(@PathVariable String keyword)
+    {
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(this.blogService.searchBlogs(keyword));
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body("Error fetching blogs: " + e.getMessage());
+        }
+    }
 }

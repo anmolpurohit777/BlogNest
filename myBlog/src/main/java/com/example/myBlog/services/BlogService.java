@@ -85,4 +85,11 @@ public class BlogService
         return false;
     }
 
+    public List<BlogDTO> searchBlogs(String keyword)
+    {
+        List<Blog> blogs=this.blogRepository.findByTitleContaining(keyword);
+        List<BlogDTO> blogDTOs=blogs.stream().map(blog->this.modelMapper.map(blog, BlogDTO.class)).collect(Collectors.toList());
+        return blogDTOs;
+    }
+
 }

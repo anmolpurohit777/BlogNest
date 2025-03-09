@@ -12,4 +12,6 @@ public interface BlogRepository extends JpaRepository<Blog, Integer>
 {
     List<Blog> findByCategory(Category category);
     List<Blog> findByUser(User user);
+
+    List<Blog> findByTitleContaining(String title);
 }
