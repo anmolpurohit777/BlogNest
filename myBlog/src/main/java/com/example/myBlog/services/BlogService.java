@@ -1,6 +1,7 @@
 package com.example.myBlog.services;
 
 import com.example.myBlog.dto.BlogDTO;
+import com.example.myBlog.dto.CommentDTO;
 import com.example.myBlog.entities.Blog;
 import com.example.myBlog.entities.Category;
 import com.example.myBlog.entities.User;
@@ -51,7 +52,12 @@ public class BlogService
     public List<BlogDTO> getAllBlogs()
     {
         List<Blog> blogs=this.blogRepository.findAll();
-        List<BlogDTO> blogDTOs=blogs.stream().map(blog->this.modelMapper.map(blog, BlogDTO.class)).collect(Collectors.toList());
+        List<BlogDTO> blogDTOs=blogs.stream().map(blog-> {
+            BlogDTO blogDTO =  this.modelMapper.map(blog, BlogDTO.class);
+            blogDTO.setComments(blog.getComments().stream().map(comment->this.modelMapper.map(comment, CommentDTO.class)).collect(Collectors.toList()));
+            return blogDTO;
+        }).collect(Collectors.toList());
+
         return blogDTOs;
     }
 
@@ -73,6 +79,18 @@ public class BlogService
 
         Blog newBlog=this.blogRepository.save(blog);
         return this.modelMapper.map(newBlog,BlogDTO.class);
+    }
+
+    public BlogDTO updateBlog(BlogDTO blogDTO,Integer blogId)
+    {
+        Blog blog=this.blogRepository.findById(blogId).get();
+
+        blog.setTitle(blogDTO.getTitle());
+        blog.setContent(blogDTO.getContent());
+        blog.setImageName(blogDTO.getImageName());
+
+        Blog updatedBlog=this.blogRepository.save(blog);
+        return this.modelMapper.map(updatedBlog,BlogDTO.class);
     }
 
     public boolean deletePost(Integer id)

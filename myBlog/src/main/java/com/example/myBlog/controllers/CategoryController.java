@@ -3,6 +3,7 @@ package com.example.myBlog.controllers;
 import com.example.myBlog.dto.CategoryDTO;
 import com.example.myBlog.entities.Category;
 import com.example.myBlog.services.CategoryService;
+import com.example.myBlog.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

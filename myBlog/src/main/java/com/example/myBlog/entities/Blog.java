@@ -2,7 +2,10 @@ package com.example.myBlog.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 //BlogEntity
 @Entity
@@ -22,6 +25,9 @@ public class Blog
 
     @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "blog",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    private List<Comment> comments=new ArrayList<>();
 
     public int getBlogId() {
         return blogId;
@@ -77,5 +83,13 @@ public class Blog
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

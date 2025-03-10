@@ -3,6 +3,7 @@ package com.example.myBlog.entities;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 //UserEntity
@@ -20,6 +21,9 @@ public class User
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Blog> blogs;
+
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+//    private Set<Comment> comments;
 
     public int getId() {
         return id;
@@ -68,4 +72,12 @@ public class User
     public void setBlogs(List<Blog> blogs) {
         this.blogs = blogs;
     }
+
+//    public Set<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(Set<Comment> comments) {
+//        this.comments = comments;
+//    }
 }
