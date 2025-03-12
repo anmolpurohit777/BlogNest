@@ -5,12 +5,15 @@ import com.example.myBlog.dto.CommentDTO;
 import com.example.myBlog.entities.Blog;
 import com.example.myBlog.entities.Category;
 import com.example.myBlog.entities.User;
+import com.example.myBlog.payloads.BlogResponse;
 import com.example.myBlog.repositories.BlogRepository;
 import com.example.myBlog.repositories.CategoryRepository;
 import com.example.myBlog.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Date;
 import java.util.List;
@@ -49,16 +52,37 @@ public class BlogService
         return blogDTOs;
     }
 
-    public List<BlogDTO> getAllBlogs()
+    public BlogResponse getAllBlogs(Integer pageNo, Integer pageSize,String sortBy,String sortDir)
     {
-        List<Blog> blogs=this.blogRepository.findAll();
+        Sort sort=null;
+        if(sortDir.equals("desc"))
+        {
+            sort = Sort.by(sortBy).ascending();
+        }
+        else
+        {
+            sort = Sort.by(sortBy).descending();
+        }
+        Pageable p=PageRequest.of(pageNo,pageSize,sort);
+
+        Page<Blog> pageBlogs=this.blogRepository.findAll(p);
+        List<Blog> blogs=pageBlogs.getContent();
+
         List<BlogDTO> blogDTOs=blogs.stream().map(blog-> {
             BlogDTO blogDTO =  this.modelMapper.map(blog, BlogDTO.class);
             blogDTO.setComments(blog.getComments().stream().map(comment->this.modelMapper.map(comment, CommentDTO.class)).collect(Collectors.toList()));
             return blogDTO;
         }).collect(Collectors.toList());
 
-        return blogDTOs;
+        BlogResponse blogResponse=new BlogResponse();
+        blogResponse.setContent(blogDTOs);
+        blogResponse.setPageNo(pageNo);
+        blogResponse.setPageSize(pageSize);
+        blogResponse.setTotalElements(pageBlogs.getTotalElements());
+        blogResponse.setTotalPages(pageBlogs.getTotalPages());
+        blogResponse.setLastPage(pageBlogs.isLast());
+
+        return blogResponse;
     }
 
     public BlogDTO getBlogById(Integer id)

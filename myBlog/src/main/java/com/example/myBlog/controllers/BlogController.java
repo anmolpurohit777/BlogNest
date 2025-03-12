@@ -46,11 +46,16 @@ public class BlogController
         }
     }
 
-    @GetMapping("/blogs/")
-    public ResponseEntity<?> getAllBlogs()
+    @GetMapping("/blogs")
+    public ResponseEntity<?> getAllBlogs(
+            @RequestParam(value = "pageNo",defaultValue = "0",required = false) Integer pageNo,
+            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
+            @RequestParam(value="sortBy",defaultValue = "addDate",required = false)String sortBy,
+            @RequestParam(value = "sortDir",defaultValue = "desc",required = false)String sortDir
+    )
     {
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(this.blogService.getAllBlogs());
+            return ResponseEntity.status(HttpStatus.OK).body(this.blogService.getAllBlogs(pageNo,pageSize,sortBy,sortDir));
         }catch(Exception e){
             return ResponseEntity.internalServerError().body("Error fetching blogs: " + e.getMessage());
         }
