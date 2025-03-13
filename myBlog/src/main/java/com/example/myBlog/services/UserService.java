@@ -38,6 +38,12 @@ public class UserService
         return this.userToDto(user);
     }
 
+    public UserDTO getUserByEmail(String email)
+    {
+        User user = this.userRepository.findByEmail(email);
+        return this.userToDto(user);
+    }
+
     public UserDTO createUser(UserDTO userDTO)
     {
         //return userRepository.save(user);

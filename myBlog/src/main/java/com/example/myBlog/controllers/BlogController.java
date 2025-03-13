@@ -15,6 +15,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:5173")
 public class BlogController
 {
     @Autowired
@@ -49,7 +50,7 @@ public class BlogController
     @GetMapping("/blogs")
     public ResponseEntity<?> getAllBlogs(
             @RequestParam(value = "pageNo",defaultValue = "0",required = false) Integer pageNo,
-            @RequestParam(value = "pageSize",defaultValue = "5",required = false) Integer pageSize,
+            @RequestParam(value = "pageSize",defaultValue = "6",required = false) Integer pageSize,
             @RequestParam(value="sortBy",defaultValue = "addDate",required = false)String sortBy,
             @RequestParam(value = "sortDir",defaultValue = "desc",required = false)String sortDir
     )

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController
 {
     @Autowired
@@ -19,12 +20,6 @@ public class UserController
     @GetMapping("/")
     public ResponseEntity<?> getAllUser()
     {
-//        try{
-//            List<User> users = userService.getAllUsers();
-//            return ResponseEntity.ok(users);
-//        }catch (Exception e){
-//            return ResponseEntity.internalServerError().body("Error fetching users: " + e.getMessage());
-//        }
         try{
             return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers());
         }catch(Exception e){
@@ -32,21 +27,27 @@ public class UserController
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<?> getById(@PathVariable Integer id)
     {
-//        try{
-//            User user = userService.getUserById(id);
-//            if (user == null)
-//            {
-//                return ResponseEntity.notFound().build();
-//            }
-//            return ResponseEntity.ok(user);
-//        }catch (Exception e){
-//            return ResponseEntity.internalServerError().body("Error fetching user: " + e.getMessage());
-//        }
         try{
             UserDTO userDTO = this.userService.getUserById(id);
+            if(userDTO == null)
+            {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body("Error fetching user: " + e.getMessage());
+        }
+
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> getById(@PathVariable String email)
+    {
+        try{
+            UserDTO userDTO = this.userService.getUserByEmail(email);
             if(userDTO == null)
             {
                 return ResponseEntity.notFound().build();
@@ -61,12 +62,6 @@ public class UserController
     @PostMapping("/")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO)
     {
-//        try{
-//            User savedUser = userService.createUser(user);
-//            return ResponseEntity.ok(savedUser);
-//        }catch (Exception e){
-//            return ResponseEntity.internalServerError().body("Error creating user: " + e.getMessage());
-//        }
         try{
             UserDTO createUserDTO=this.userService.createUser(userDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createUserDTO);
@@ -78,12 +73,6 @@ public class UserController
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Integer id, @RequestBody UserDTO updatedUserDTO)
     {
-//        try{
-//            User user = userService.updateUser(id, updatedUser);
-//            return ResponseEntity.ok(user);
-//        }catch(Exception e){
-//            return ResponseEntity.internalServerError().body("Error updating user: " + e.getMessage());
-//        }
         try{
             UserDTO updateUserDTO=this.userService.updateUser(id, updatedUserDTO);
             return ResponseEntity.ok().body(updateUserDTO);
