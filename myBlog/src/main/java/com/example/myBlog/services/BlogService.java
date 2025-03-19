@@ -1,7 +1,10 @@
 package com.example.myBlog.services;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.myBlog.dto.BlogDTO;
 import com.example.myBlog.dto.CommentDTO;
+import com.example.myBlog.dto.UserDTO;
 import com.example.myBlog.entities.Blog;
 import com.example.myBlog.entities.Category;
 import com.example.myBlog.entities.User;
@@ -14,9 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 //BlogService
@@ -35,6 +41,9 @@ public class BlogService
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    Cloudinary cloudinary;
 
     public List<BlogDTO> getByCategories(Integer id)
     {
@@ -91,19 +100,24 @@ public class BlogService
         return this.modelMapper.map(blog,BlogDTO.class);
     }
 
-    public BlogDTO createBlog(BlogDTO blogDTO,Integer userId,Integer categoryId)
-    {
+    public BlogDTO createBlog(BlogDTO blogDTO, Integer userId, Integer categoryId, MultipartFile image) throws IOException {
         User user=userRepository.findById(userId).get();
         Category category=categoryRepository.findById(categoryId).get();
 
+        Map uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
+        String imageUrl = (String) uploadResult.get("secure_url");
+
+
         Blog blog=this.modelMapper.map(blogDTO, Blog.class);
         blog.setAddDate(new Date());
+        blog.setImageName(imageUrl);
         blog.setUser(user);
         blog.setCategory(category);
 
         Blog newBlog=this.blogRepository.save(blog);
         return this.modelMapper.map(newBlog,BlogDTO.class);
     }
+
 
     public BlogDTO updateBlog(BlogDTO blogDTO,Integer blogId)
     {
